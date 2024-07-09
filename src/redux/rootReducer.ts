@@ -1,10 +1,8 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import oompaLoompaReducer from './oompaLoompaSlice';
-import pageCounterReducer from './pageCounterSlice';
 
 const rootReducer = combineReducers({
-  oompaLoompa: oompaLoompaReducer,
-  pageCounter: pageCounterReducer,
+  oompaLoompa: oompaLoompaReducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

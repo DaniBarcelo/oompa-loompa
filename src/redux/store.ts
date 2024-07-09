@@ -12,12 +12,7 @@ const persistConfig = {
       expireSeconds: 86400,
       expiredState: { oompaLoompas: [] },
       autoExpire: true,
-    }),
-    expireReducer('pageCounter', {
-      expireSeconds: 86400,
-      expiredState: { pageCounter: 1 },
-      autoExpire: true,
-    }),
+    })
   ],
 };
 
