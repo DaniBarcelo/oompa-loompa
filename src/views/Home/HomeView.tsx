@@ -1,14 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
-import Header from "../../components/Header";
-import { Grid, Typography } from "@mui/material";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { Grid, Typography } from "@mui/material";
 
+import Header from "../../components/Header";
+import SearchComponent from "../../components/Search";
 import { OompaLoompa } from "../../Models/OompaLoompa";
 import { hoverColor } from "../../utils/constants";
-import SearchComponent from "../../components/Search";
-
-import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from "../../redux/store";
 import { addDescription, addOompaLoompa } from "../../redux/oompaLoompaSlice";
 
