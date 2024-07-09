@@ -1,23 +1,46 @@
-import Header from "../../components/Header"
-import { useSelector } from 'react-redux';
-import { RootState } from "../../redux/store";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { selectOompaLoompaById } from "../../redux/oompaLoompaSlice";
-import { useEffect } from "react";
+import { useSelector, useDispatch } from 'react-redux';
 import { Grid, Typography } from "@mui/material";
 
+import Header from "../../components/Header";
+import { OompaLoompa } from "../../Models/OompaLoompa";
+import { RootState, AppDispatch } from "../../redux/store";
+import { addDescription, selectOompaLoompaById } from "../../redux/oompaLoompaSlice";
 
 export default function DetailView() {
 
     const { id } = useParams();
     const navigate = useNavigate();
+    const dispatch = useDispatch<AppDispatch>();
 
-    const oompaLoompa = useSelector((state: RootState) => id !== undefined ? selectOompaLoompaById(id)(state) : null);
+    const [oompaLoompa, setOompaLoompa] = useState(useSelector((state: RootState) => id !== undefined ? selectOompaLoompaById(id)(state) : null))
+
+    const checkIfIsValidId = (value: string) => {
+        const regex = /^\d+$/;
+        return regex.test(value);
+    }
 
     useEffect(() => {
-        if (!oompaLoompa) {
-            navigate('/')
+        const initDetailView = async () => {
+            if (id === undefined || !checkIfIsValidId(id)) {
+                navigate('/')
+            } else {
+                if (!oompaLoompa || oompaLoompa.description === "") {
+                    try {
+                        const response = await fetch(`https://2q2woep105.execute-api.eu-west-1.amazonaws.com/napptilus/oompa-loompas/${id}`);
+                        const data = await response.json();
+                        const myOompaLoompa = OompaLoompa.toOompaLoompa(data)
+                        dispatch(addDescription({ id: id, description: myOompaLoompa.description }))
+                        setOompaLoompa(myOompaLoompa)
+                    }
+                    catch (e) {
+                        navigate('/')
+                    }
+                }
+            }
         }
+        initDetailView()
     })
 
     return (
