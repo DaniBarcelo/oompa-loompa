@@ -47,10 +47,12 @@ export default function HomeView() {
     }
 
     const getDescription = async (id: string) => {
-        const response = await fetch(`https://2q2woep105.execute-api.eu-west-1.amazonaws.com/napptilus/oompa-loompas/${id}`);
-        const data = await response.json();
-        const myOompaLoompa = OompaLoompa.toOompaLoompa(data)
-        dispatch(addDescription({ id: id, description: myOompaLoompa.description }))
+        if (oompaLoompas.filter((oompaLoompa: OompaLoompa) => oompaLoompa.id === id)[0].description === "") {
+            const response = await fetch(`https://2q2woep105.execute-api.eu-west-1.amazonaws.com/napptilus/oompa-loompas/${id}`);
+            const data = await response.json();
+            const myOompaLoompa = OompaLoompa.toOompaLoompa(data)
+            dispatch(addDescription({ id: id, description: myOompaLoompa.description }))
+        }
     }
 
     useEffect(() => {
